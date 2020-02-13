@@ -14,7 +14,7 @@
         caracteristicas del componente. Es un objeto muy similar al objeto de definición de directiva.
     */
     module.component("movieList", {
-        template: "Hello from a component!"
+        templateUrl: "/ps-movies/movie-list.component.html"
     });
 
 }());
