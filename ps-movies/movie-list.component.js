@@ -14,7 +14,19 @@
         caracteristicas del componente. Es un objeto muy similar al objeto de definición de directiva.
     */
     module.component("movieList", {
-        templateUrl: "/ps-movies/movie-list.component.html"
+        templateUrl: "/ps-movies/movie-list.component.html",
+        /*Agrego un atributo para definir el alias del controller */
+        controllerAs: "model",
+        controller: function() {
+
+            var model = this;
+
+            model.message = "Janaina"
+
+            model.changeMessage  = function(){
+                model.message = "New message"
+            };
+        }
     });
 
 }());
