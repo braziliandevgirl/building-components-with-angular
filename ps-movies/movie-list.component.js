@@ -7,26 +7,45 @@
 
     var module = angular.module("psMovies");
     
-    /*
-        Una vez que tengo la referencia del módulo, puedo utilizarlo (module API)
-        para definir un componente. Hay 2 partes en el componente: el nombre del componente
-        (camelCase) y un objeto de definición del componente que va a informar a Angular las diferentes
-        caracteristicas del componente. Es un objeto muy similar al objeto de definición de directiva.
-    */
+    function fetchMovies($http) {
+        return $http.get("/movies.json")
+                    .then(function(response) {
+                        return response.data;
+                    });
+    }
+    
+    function controller($http) {
+
+        var model = this;   
+        model.movies = [];
+
+        //Estoy forzando la inicialización de mi modelo en un método distinto y separado de solo construir una
+        //instancia del
+        model.$onInit = function() {
+            fetchMovies($http)
+                .then(function(movies) {
+                    model.movies = movies;
+                });
+        };
+
+        model.upRating = function(movie) {
+            if(movie.rating < 5){
+                movie.rating += 1;
+            }
+        };
+
+        model.downRating = function(movie) {
+            if(movie.rating > 1){
+                movie.rating -= 1;
+            }
+        };
+    }    
+    
     module.component("movieList", {
         templateUrl: "/ps-movies/movie-list.component.html",
         /*Agrego un atributo para definir el alias del controller */
         controllerAs: "model",
-        controller: function() {
-
-            var model = this;
-
-            model.message = "Janaina"
-
-            model.changeMessage  = function(){
-                model.message = "New message"
-            };
-        }
+        controller: ["$http", controller]
     });
 
 }());
